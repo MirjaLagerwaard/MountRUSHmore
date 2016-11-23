@@ -1,19 +1,22 @@
 from board import *
-
+from vehicle import *
 
 def BreadthFirstSearch(self):
     """
-    Comments
+    TODO
     """
 
-
-# Implementatie bord?
-# board = []
-# #
-# for row in range(9):
-#     board.append([])
-#     for column in range(9):
-#         board[row].append('.')
-#
-# for element in board:
-#     print (" ".join(element))
+    #1 voeg de array childs toe aan de queue
+    #2 als de array leeg is
+        # return geen oplossing
+    #3 anders pak eerste item van de queue
+        #4 is het item de oplossing (call functie isSolution)?
+            #JA:
+                # stop en return
+            #NEE:
+                #5 is het item aanwezig in het archief?
+                    #JA:
+                        # ga naar 2
+                    #NEE:
+                        # maak alle kinderen van het item (call functie moves)
+                        # ga naar 1
