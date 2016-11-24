@@ -18,9 +18,13 @@ class Board(object):
         """
         TODO
         """
+        car_ID = [A, B]
 
-
-
+        self.board[0][0] == "A"
+        self.board[0][1] == "A"
+        self.board[1][0] == "."
+        self.board[1][1] == "."
+        print self.board
 
     def moves(self, width, height, position):
         """
@@ -36,7 +40,7 @@ class Board(object):
         # iterate over each x-position on board until wall is reached
         for x_pos in hor_auto(Vehicle.getX(), (self.width - 1), 1):
             # check if position in front of vehicle is empty
-            if (board[Vehicle.getX() + 1, Vehicle.getY()] == "."):
+            if board[Vehicle.getX() + 1, Vehicle.getY()] == ".":
                 childs.append(board)
             # vehicle is nou aloud to move, a car or truck is in his way
             else:
@@ -49,15 +53,15 @@ class Board(object):
         # iterate over each x-position on board until wall is reached
         for x_pos in hor_auto(Vehicle.getX(), (self.size - 1), -1):
             # check backwards moving if vehicle is a car
-            if (self.size == '2'):
-                if (board[Vehicle.getX() - 2, Vehicle.getY()] == "."):
+            if self.size == '2':
+                if board[Vehicle.getX() - 2, Vehicle.getY()] == ".":
                     childs.append(board)
                 # vehicle is nou aloud to move, a car or truck is in his way
                 else:
                     break
             # check backwards moving if vehicle is a truck
-            elif (self.size == '3'):
-                if (board[Vehicle.getX() - 3, Vehicle.getY()] == "."):
+            elif self.size == '3':
+                if board[Vehicle.getX() - 3, Vehicle.getY()] == ".":
                     childs.append(board)
                 # vehicle is not alowed to move, a car or truck is in his way
                 else:
@@ -83,15 +87,15 @@ class Board(object):
         # iterate over each y-position on board until wall is reached
         for y_pos in ver_auto(Vehicle.getY(), (self.size - 1), -1):
             # check backwards moving if vehicle is a car
-            if (self.size == '2'):
-                if (board[Vehicle.getX() - 2, Vehicle.getY()] == "."):
+            if self.size == '2':
+                if board[Vehicle.getX() - 2, Vehicle.getY()] == ".":
                     childs.append(board)
                 # vehicle is now alowed to move, a car or truck is in his way
                 else:
                     break
             # check backwards moving if vehicle is a truck
-            elif (self.size == '3'):
-                if (board[Vehicle.getX() - 3, Vehicle.getY()] == "."):
+            elif self.size == '3':
+                if board[Vehicle.getX() - 3, Vehicle.getY()] == ".":
                     childs.append(board)
                 # vehicle is nou alowed to move, a car or truck is in his way
                 else:
