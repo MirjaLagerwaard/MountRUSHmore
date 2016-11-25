@@ -6,60 +6,82 @@ class Board(object):
     """
     def __init__(self, width, height, y_exit):
         """
-        TODO
+        Initialize board.
         """
         self.width = width
         self.height = height
         self.y_exit = y_exit
+        self.board = [['_' for j in range(self.height)] for i in range(self.width)]
 
     def makeBoard(self, hor_auto, ver_auto):
         """
-        TODO
+        Prints the begin state of the board.
         """
-
-        board = [['_' for j in range(self.height)] for i in range(self.width)]
 
         for vehicle in hor_auto:
             for i in range(0, int(vehicle.size)):
-                board[int(vehicle.y)][int(vehicle.x) - i] = vehicle.ID
+                self.board[int(vehicle.y)][int(vehicle.x) - i] = vehicle.ID
         for vehicle in ver_auto:
             for i in range(0, int(vehicle.size)):
-                board[int(vehicle.y) - i][int(vehicle.x)] = vehicle.ID
+                self.board[int(vehicle.y) - i][int(vehicle.x)] = vehicle.ID
 
-        for element in board:
+        for element in self.board:
             print (" ".join(element))
+        print '\n'
 
-    def moves(self, width, height, position):
+    def updateBoard(self, hor_auto, ver_auto, ID, x, y):
+
+        # for x_board in range(self.width - 1):
+        #     for y_board in range(self.height - 1):
+        #         if self.board[y_board][x_board] == ID:
+        #             self.board[y_board][x_board] = '_'
+        #     self.board[y][x] = ID
+        #     self.board[y][x - 1] = ID
+        #
+        # for element in self.board:
+        #     print (" ".join(element))
+        # print '\n'
+
+    def possibleMoves(self, hor_auto, ver_auto):
         """
-        TODO
+        Returns all possible moves of a specific state of the board.
         """
 
-        childs = []
-
+        children = {}
+        moves = []
         """
         Movement of horizontal cars TO RIGHT
         """
 
-        # iterate over each x-position on board until wall is reached
-        for x_pos in hor_auto(Vehicle.getX(), (self.width - 1), 1):
-            # check if position in front of vehicle is empty
-            if board[Vehicle.getX() + 1, Vehicle.getY()] == "_":
-                childs.append(board)
-            # vehicle is nou aloud to move, a car or truck is in his way
-            else:
-                break
+        # iterate over each vehicle in list 'hor_auto'
+        for vehicle in hor_auto:
+            # iterate over each possible x-position untill wall is reached
+            for i in range(self.width - 1):
+                # check if position in front of vehicle is empty
+                if self.board[vehicle.y][vehicle.x + i] == "_":
+                    # add possible position to list 'moves'
+                    moves.append(vehicle.x + i)
+                # vehicle is not alowed to move, a car or truck is in his way
+                else:
+                    break
+            # hash all possible moves in dictionary children with key vehicle.ID
+            children[vehicle.ID] = moves
+
+        #'clear list 'moves'
+        moves = []
 
         """
         Movement of horizontal vehicles TO LEFT
         """
 
         # iterate over each x-position on board until wall is reached
-        for x_pos in hor_auto(Vehicle.getX(), (self.size - 1), -1):
+        for vehicle in hor_auto
+            for i in range etX(), (self.size - 1), -1):
             # check backwards moving if vehicle is a car
             if self.size == '2':
                 if board[Vehicle.getX() - 2, Vehicle.getY()] == "_":
                     childs.append(board)
-                # vehicle is nou aloud to move, a car or truck is in his way
+                # vehicle is not alowed to move, a car or truck is in his way
                 else:
                     break
             # check backwards moving if vehicle is a truck
@@ -79,7 +101,7 @@ class Board(object):
             # check if position in front of vehicle is empty
             if (board[Vehicle.getX(), Vehicle.getY() + 1] == "_"):
                 childs.append(board)
-            # vehicle is now alowed to move, a car or truck is in his way
+            # vehicle is not alowed to move, a car or truck is in his way
             else:
                 break
 
@@ -93,17 +115,18 @@ class Board(object):
             if self.size == '2':
                 if board[Vehicle.getX() - 2, Vehicle.getY()] == "_":
                     childs.append(board)
-                # vehicle is now alowed to move, a car or truck is in his way
+                # vehicle is not alowed to move, a car or truck is in his way
                 else:
                     break
             # check backwards moving if vehicle is a truck
             elif self.size == '3':
                 if board[Vehicle.getX() - 3, Vehicle.getY()] == "_":
                     childs.append(board)
-                # vehicle is nou alowed to move, a car or truck is in his way
+                # vehicle is not alowed to move, a car or truck is in his way
                 else:
                     break
 
+        print childs
         return childs
 
     def isSolution(self):
