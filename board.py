@@ -1,11 +1,12 @@
-import pprint
-import numpy as np
+from vehicle import *
+import copy
 
 class Board(object):
     """
-    TODO
+    Rush Hour board.
     """
-    def __init__(self, width, height, y_exit):
+
+    def __init__(self, width, height, y_exit, hor_auto, ver_auto):
         """
         Initialize board.
         """
@@ -14,6 +15,8 @@ class Board(object):
         self.height = height
         self.y_exit = y_exit
         self.board = [['_'] * self.height for _ in range(self.width)]
+        self.hor_auto = hor_auto
+        self.ver_auto = ver_auto
 
 
     def printBoard(self):
@@ -27,60 +30,71 @@ class Board(object):
         # print board
         for element in board:
             print " ".join(element)
+        print "\n"
 
+    def toString(self):
+        """
+        Makes a string of the state of the board.
+        """
 
-    def makeBoard(self, hor_auto, ver_auto):
+        s = ""
+        for element in board:
+            s += "".join(element)
+        return s
+
+    def makeBoard(self):
         """
         Makes the beginstate of the board.
         """
 
         # iterate over each verhicle in list 'hor_auto'
-        for ID, vehicle in hor_auto.iteritems():
+        for ID, vehicle in self.hor_auto.iteritems():
             # set vehicle ID on each position of the vehicle
             for i in range(0, vehicle.size):
                 self.board[vehicle.x - i][ vehicle.y] = ID
 
         # iterate over each verhicle in list 'ver_auto'
-        for ID, vehicle in ver_auto.iteritems():
+        for ID, vehicle in self.ver_auto.iteritems():
             # set vehicle ID on each position of the vehicle
             for i in range(0, vehicle.size):
                 self.board[vehicle.x][vehicle.y - i] = ID
 
         # prints the beginstate of the board
+        print "Beginstate"
         self.printBoard()
 
 
-    def updateBoard(self, hor_auto, ver_auto, ID, x, y):
+    def updateBoard(self, ID, x, y):
         """
         Update the board and the hor_auto or ver_auto dict.
         """
 
         # iterate over each x- and y-coordinate of the board
-        for x_board in range(self.width - 1):
-            for y_board in range(self.height - 1):
+        for x_board in range(self.width):
+            for y_board in range(self.height):
                 # remove the vehicle from the old position on the board
                 if self.board[x_board][y_board] == ID:
                     self.board[x_board][y_board] = '_'
 
         # update x-coordinate for horizontal car
-        if ID in hor_auto:
-            hor_auto[ID].x = x
+        if ID in self.hor_auto:
+            self.hor_auto[ID].x = x
 
-            self.board[x][y] = ID
-            self.board[x - 1][y] = ID
+            for i in range(self.hor_auto[ID].size):
+                self.board[x - i][y] = ID
 
         # update y-coordinate for vertical car
-        elif ID in ver_auto:
-            ver_auto[ID].y = y
+        elif ID in self.ver_auto:
+            self.ver_auto[ID].y = y
 
-            self.board[x][y] = ID
-            self.board[x][y - 1] = ID
+            for i in range(self.ver_auto[ID].size):
+                self.board[x][y - i] = ID
 
-        # prints the board with the vehicle on his new position
-        self.printBoard()
+        # # prints the board with the vehicle on his new position
+        # self.printBoard()
 
 
-    def possibleMoves(self, hor_auto, ver_auto):
+    def possibleMoves(self):
         """
         Returns all possible moves of a specific state of the board as a dict.
         """
@@ -89,7 +103,7 @@ class Board(object):
 
         # MOVEMENT OF HORIZONTAL CARS
         # iterate over each vehicle in list 'hor_auto'
-        for ID, vehicle in hor_auto.iteritems():
+        for ID, vehicle in self.hor_auto.iteritems():
             # iterate over each possible x-position untill RIGHT wall is reached
             for i in range(vehicle.x + 1, self.width):
                 # check if position in front of vehicle is empty
@@ -106,7 +120,7 @@ class Board(object):
                     break
 
             # iterate over each possible x-position untill LEFT wall is reached
-            for i in range (vehicle.x - 1, vehicle.size - 2, -1):
+            for i in range(vehicle.x - 1, vehicle.size - 2, -1):
                 # check if position in front of vehicle is empty
                 if self.board[i - (vehicle.size - 1)][vehicle.y] == "_":
                     # store the coordinates as a tuple
@@ -122,7 +136,7 @@ class Board(object):
 
         # MOVEMENT OF VERTICAL CARS
         # iterate over each vehicle in list 'ver_auto'
-        for ID, vehicle in ver_auto.iteritems():
+        for ID, vehicle in self.ver_auto.iteritems():
             # iterate over each possible y-position untill LOWER wall is reached
             for i in range(vehicle.y + 1, self.height):
                 # check if position in front of vehicle is empty
@@ -139,7 +153,7 @@ class Board(object):
                     break
 
             # iterate over each possible y-position untill UPPER wall is reached
-            for i in range (vehicle.y - 1, vehicle.size - 2, -1):
+            for i in range(vehicle.y - 1, vehicle.size - 2, -1):
                 # check if position in front of vehicle is empty
                 if self.board[vehicle.x][i - (vehicle.size - 1)] == "_":
                     # store the coordinates as a tuple
@@ -156,14 +170,13 @@ class Board(object):
         # return the dict 'children' with all the possible moves of each vehicle
         return children
 
-
-    def isSolution(self, hor_auto):
+    def isSolution(self):
         """
-        Returns true when red car is at the EXIT
+        Returns true when red car can drive through the EXIT.
         """
 
         # iterate over each vehicle in list 'hor_auto'
-        for _, vehicle in hor_auto.iteritems():
+        for _, vehicle in self.hor_auto.iteritems():
             # if the y-coordinate of the vehicle is equal to the y-coordinate of the EXIT
             if self.y_exit == vehicle.y:
                 # iterate over each x-coordinate
@@ -174,35 +187,48 @@ class Board(object):
                 return True
 
 
-    def BreadthFirstSearch(board):
+    def BreadthFirstSearch(self):
         """
-        TODO
+        Breadth-first search (BFS) is an algorithm for traversing or searching
+        tree or graph data structures. It starts at the tree root (or some
+        arbitrary node of a graph, sometimes referred to as a 'search key'[1])
+        and explores the neighbor nodes first, before moving to the next level
+        neighbors.
         """
+        # make the archive (as a dict) and the queue (as a list)
+        archive = {self.toString(): 0}
+        queue = [self]
 
-        #1 voeg de dict childs toe aan de queue
-        #2 als de queue leeg is
-            # return geen oplossing
-        #3 anders pak eerste item van de queue
-            #4 is het item de oplossing (call functie isSolution)?
-            if isSolution() == True:
-                return child
-                break
-            else: 
+        # while there are items in the queue
+        while queue:
+            # pop the first item of the queue (FIFO: first in, first out)
+            parent_state = queue.pop(0)
 
-                    #5 is het item aanwezig in het archief?
-                        #JA:
-                            # ga naar 2
-                        #NEE:
-                            # maak alle kinderen van het item (call functie possibleMoves)
-                            # ga naar 1
+            # get all the possible moves of this parent state, i.e. the children
+            moves = parent_state.possibleMoves()
 
-class Vehicle(object):
-    """
-    TODO
-    """
-    def __init__(self, direction, ID, x, y, size):
-        self.dir = direction
-        self.x = x
-        self.y = y
-        self.size = size
-        self.ID = ID
+            # iterate over each possible move
+            for ID, move_list in moves.iteritems():
+                # iterate over each x- and y-coordinate
+                for (x, y) in move_list:
+                    # make a copy of the child state
+                    child_state = copy.deepcopy(parent_state)
+
+                    # update board
+                    child_state.updateBoard(ID, x, y)
+                    print len(archive)
+
+                    # if the child is in the archive, break out of loop
+                    if child_state.toString() in archive:
+                        break
+                    # if the child is the solution, print party and how many moves were needed, and return
+                    elif child_state.isSolution():
+                        print "Firework, Champagne, Confetti!"
+                        print str(archive[parent_state.toString()] + 2) + " moves were needed."
+                        return
+
+                    # add the child state to archive and report the depth of the graph
+                    archive[child_state.toString()] = archive[parent_state.toString()] + 1
+
+                    # add the children of the parent state to the queue
+                    queue.append(child_state)
