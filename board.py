@@ -5,7 +5,7 @@ class Board(object):
     """
     Rush Hour board.
     """
-
+    
     def __init__(self, width, height, y_exit, hor_auto, ver_auto):
         """
         Initialize board.
