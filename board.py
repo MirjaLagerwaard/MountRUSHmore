@@ -5,7 +5,7 @@ class Board(object):
     """
     Rush Hour board.
     """
-    
+
     def __init__(self, width, height, y_exit, hor_auto, ver_auto):
         """
         Initialize board.
@@ -38,8 +38,12 @@ class Board(object):
         """
 
         s = ""
-        for element in board:
-            s += "".join(element)
+        for _, vehicle in self.hor_auto.iteritems():
+            s += str(vehicle.x)
+
+        for _, vehicle in self.ver_auto.iteritems():
+            s += str(vehicle.y)
+            
         return s
 
     def makeBoard(self):
