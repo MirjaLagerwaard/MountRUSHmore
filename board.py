@@ -15,6 +15,7 @@ class Board(object):
         self.y_exit = y_exit
         self.board = [['_'] * self.height for _ in range(self.width)]
 
+
     def printBoard(self):
         """
         Prints the board.
@@ -26,6 +27,7 @@ class Board(object):
         # print board
         for element in board:
             print " ".join(element)
+
 
     def makeBoard(self, hor_auto, ver_auto):
         """
@@ -46,6 +48,7 @@ class Board(object):
 
         # prints the beginstate of the board
         self.printBoard()
+
 
     def updateBoard(self, hor_auto, ver_auto, ID, x, y):
         """
@@ -75,6 +78,7 @@ class Board(object):
 
         # prints the board with the vehicle on his new position
         self.printBoard()
+
 
     def possibleMoves(self, hor_auto, ver_auto):
         """
@@ -152,18 +156,22 @@ class Board(object):
         # return the dict 'children' with all the possible moves of each vehicle
         return children
 
+
     def isSolution(self, hor_auto):
         """
         Returns true when red car is at the EXIT
         """
+
         # iterate over each vehicle in list 'hor_auto'
         for _, vehicle in hor_auto.iteritems():
-            # if the y-coordinate of the vehicle is the y-coordinate of the EXIT
+            # if the y-coordinate of the vehicle is equal to the y-coordinate of the EXIT
             if self.y_exit == vehicle.y:
-                # and if the x-coordinate of the vehicle is at the EXIT
-                if vehicle.x == self.width - 1:
-                    # we found the solution, return true
-                    return True
+                # iterate over each x-coordinate
+                for i in range(vehicle.x + 1, self.width):
+                    # check if the way to the EXIT is free
+                    if self.board[i][vehicle.y] != "_":
+                        return False
+                return True
 
 
     def BreadthFirstSearch(board):
@@ -171,19 +179,21 @@ class Board(object):
         TODO
         """
 
-        #1 voeg de array childs toe aan de queue
-        #2 als de array leeg is
+        #1 voeg de dict childs toe aan de queue
+        #2 als de queue leeg is
             # return geen oplossing
         #3 anders pak eerste item van de queue
             #4 is het item de oplossing (call functie isSolution)?
-                #JA:
-                    # stop en return
-                #NEE:
+            if isSolution() == True:
+                return child
+                break
+            else: 
+
                     #5 is het item aanwezig in het archief?
                         #JA:
                             # ga naar 2
                         #NEE:
-                            # maak alle kinderen van het item (call functie moves)
+                            # maak alle kinderen van het item (call functie possibleMoves)
                             # ga naar 1
 
 class Vehicle(object):
