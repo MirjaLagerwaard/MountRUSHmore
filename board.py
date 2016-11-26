@@ -52,23 +52,28 @@ class Board(object):
         Update the board and the hor_auto or ver_auto dict.
         """
 
+        # iterate over each x- and y-coordinate of the board
         for x_board in range(self.width - 1):
             for y_board in range(self.height - 1):
+                # remove the vehicle from the old position on the board
                 if self.board[x_board][y_board] == ID:
                     self.board[x_board][y_board] = '_'
 
+        # update x-coordinate for horizontal car
         if ID in hor_auto:
             hor_auto[ID].x = x
 
             self.board[x][y] = ID
             self.board[x - 1][y] = ID
 
+        # update y-coordinate for vertical car
         elif ID in ver_auto:
             ver_auto[ID].y = y
 
             self.board[x][y] = ID
             self.board[x][y - 1] = ID
 
+        # prints the board with the vehicle on his new position
         self.printBoard()
 
     def possibleMoves(self, hor_auto, ver_auto):
@@ -147,14 +152,19 @@ class Board(object):
         # return the dict 'children' with all the possible moves of each vehicle
         return children
 
-    def isSolution(self):
+    def isSolution(self, hor_auto):
         """
         Returns true when red car is at the EXIT
         """
-        for verhicles in hor_auto:
+        # iterate over each vehicle in list 'hor_auto'
+        for _, vehicle in hor_auto.iteritems():
+            # if the y-coordinate of the vehicle is the y-coordinate of the EXIT
             if self.y_exit == vehicle.y:
+                # and if the x-coordinate of the vehicle is at the EXIT
                 if vehicle.x == self.width - 1:
+                    # we found the solution, return true
                     return True
+
 
     def BreadthFirstSearch(board):
         """
