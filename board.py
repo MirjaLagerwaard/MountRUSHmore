@@ -1,6 +1,4 @@
 from vehicle import *
-import copy
-import Queue
 
 class Board(object):
     """
