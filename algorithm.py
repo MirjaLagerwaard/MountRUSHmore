@@ -1,5 +1,6 @@
 import copy
 import Queue
+import random
 
 def toString(vehicles):
     """
@@ -89,3 +90,80 @@ def BreadthFirstSearch(board):
                 old_x = parent_vehicles[ID].x
                 old_y = parent_vehicles[ID].y
                 board.updateBoard(ID, old_x, old_y, child_vehicles)
+
+def RandomMoves(board):
+    """
+
+    """
+
+    while board.isSolution() == False:
+        # moves is de lijst met alle mogelijke moves
+        moves = board.possibleMoves()
+
+        # pak een random move uit te lijst
+        random_move = random.choice(moves.values())
+        random_move = updateArray(random_move, ID, x, y)
+
+        board.updateBoard(ID, x, y, random_move)
+
+
+    board.printBoard()
+    print "Firework, Champagne, Confetti!"
+    return
+
+
+
+
+
+
+
+
+
+    # counter = 0
+    # total_moves = 0
+    #
+    # while board.isSolution() == False:
+    #     for ID, vehicle in board.vehicles.iteritems():
+    #         if vehicle.dir == 'H':
+    #             for i in range(vehicle.x + 1, board.width - 1):
+    #                 if board.board[i][vehicle.y] == "_":
+    #                     counter += 1
+    #             # print vehicle.x + 1
+    #             # print counter
+    #             print ID
+    #             new_x = random.randrange(vehicle.x + 1, counter + 1, 1)
+    #             updateArray(board.vehicles, ID, new_x, vehicle.y)
+    #             total_moves += 1
+    #             if board.isSolution() == True:
+    #                 print "Jippie"
+    #                 print total_moves
+    #                 return
+    #             counter = 0
+    #
+    #             for i in range(vehicle.x + 1, board.width - 1):
+    #                 if board.board[i][vehicle.y] == "_":
+    #                     counter += 1
+    #             # print vehicle.x + 1
+    #             # print counter
+    #             print ID
+    #             new_x = random.randrange(vehicle.x + 1, counter + 1, 1)
+    #             updateArray(board.vehicles, ID, new_x, vehicle.y)
+    #             total_moves += 1
+    #             if board.isSolution() == True:
+    #                 print "Jippie"
+    #                 print total_moves
+    #                 return
+    #             counter = 0
+    #
+    #         elif vehicle.dir == 'V':
+    #             for i in range(vehicle.y + 1, board.height - 1):
+    #                 if board.board[vehicle.x][i] == "_":
+    #                     counter += 1
+    #             new_y = random.randrange(vehicle.y + 1, counter + 1, 1)
+    #             updateArray(board.vehicles, ID, vehicle.x, new_y)
+    #             total_moves += 1
+    #             if board.isSolution() == True:
+    #                 print "Jippie"
+    #                 print total_moves
+    #                 return
+    #             counter = 0

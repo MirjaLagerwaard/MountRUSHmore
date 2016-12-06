@@ -25,7 +25,7 @@ def main():
             vehicles[vehicle[1]] = Vehicle(vehicle[0], vehicle[1], int(vehicle[2]), int(vehicle[3]), int(vehicle[4]))
 
     Board1 = Board(6, 6, 2, vehicles)
-    BreadthFirstSearch(Board1)
+    RandomMoves(Board1)
 
 if __name__ == "__main__":
     main()
