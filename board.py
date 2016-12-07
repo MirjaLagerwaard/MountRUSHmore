@@ -94,9 +94,9 @@ class Board(object):
                     else:
                         break
                 # iterate over each possible x-position untill LEFT wall is reached
-                for i in range(vehicle.x - 1, vehicle.size - 2, -1):
+                for i in range(vehicle.x - vehicle.size, (vehicle.size-1), -1):
                     # check if position in front of vehicle is empty
-                    if self.board[i - (vehicle.size - 1)][vehicle.y] == "_":
+                    if self.board[i][vehicle.y] == "_":
                         # store the coordinates as a tuple
                         coordinate = (i, vehicle.y)
                         # hash the possible child to the dict 'children'
@@ -127,9 +127,9 @@ class Board(object):
                         break
 
                 # iterate over each possible y-position untill UPPER wall is reached
-                for i in range(vehicle.y - 1, vehicle.size - 2, -1):
+                for i in range(vehicle.y - vehicle.size, (vehicle.size-1), -1):
                     # check if position in front of vehicle is empty
-                    if self.board[vehicle.x][i - (vehicle.size - 1)] == "_":
+                    if self.board[vehicle.x][i] == "_":
                         # store the coordinates as a tuple
                         coordinate = (vehicle.x , i)
                         # hash the possible child to the dict 'children'

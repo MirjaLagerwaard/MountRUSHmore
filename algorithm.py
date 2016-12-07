@@ -17,7 +17,7 @@ def toString(vehicles):
 
     return s
 
-def updateArray (vehicles, ID, x, y):
+def updateArray (ID, x, y, vehicles):
     """
     Updates the array of vehicles.
     """
@@ -63,7 +63,7 @@ def BreadthFirstSearch(board):
                 child_vehicles = copy.deepcopy(parent_vehicles)
 
                 # update array
-                child_vehicles = updateArray(child_vehicles, ID, x, y)
+                child_vehicles = updateArray(ID, x, y, child_vehicles)
 
                 # print len(archive)
 
@@ -96,74 +96,43 @@ def RandomMoves(board):
 
     """
 
-    while board.isSolution() == False:
-        # moves is de lijst met alle mogelijke moves
-        moves = board.possibleMoves()
+    total_moves = 0
+    new_dict = {}
+    archive_list = []
 
-        # pak een random move uit te lijst
-        random_move = random.choice(moves.values())
-        random_move = updateArray(random_move, ID, x, y)
+    while not board.isSolution():
+        for i in range(10):
+            moves = board.possibleMoves()
 
-        board.updateBoard(ID, x, y, random_move)
+            for i in range (0, len(moves)):
+                for j in range (0, len(moves.values()[i])):
+                    new_dict[moves.values()[i][j]] = moves.keys()[i]
 
+            random_move = random.choice(new_dict.keys())
+            x, y = random_move
+            ID = new_dict[random_move]
 
-    board.printBoard()
+            legal = False
+
+            while not legal and len(archive_list) > 0:
+                for element in archive_list:
+                    if element[0] == x and element[1] == y and element[2] == ID:
+                        continue
+                    else:
+                        legal = True
+                random_move = random.choice(new_dict.keys())
+                x, y = random_move
+                ID = new_dict[random_move]
+
+            total_moves += 1
+            print total_moves
+            
+            archive_list.append([x, y, ID])
+            board.updateBoard(ID, x, y, board.vehicles)
+            board.vehicles = updateArray(ID, x, y, board.vehicles)
+            new_dict = {}
+
+        archive_list = []
+
     print "Firework, Champagne, Confetti!"
-    return
-
-
-
-
-
-
-
-
-
-    # counter = 0
-    # total_moves = 0
-    #
-    # while board.isSolution() == False:
-    #     for ID, vehicle in board.vehicles.iteritems():
-    #         if vehicle.dir == 'H':
-    #             for i in range(vehicle.x + 1, board.width - 1):
-    #                 if board.board[i][vehicle.y] == "_":
-    #                     counter += 1
-    #             # print vehicle.x + 1
-    #             # print counter
-    #             print ID
-    #             new_x = random.randrange(vehicle.x + 1, counter + 1, 1)
-    #             updateArray(board.vehicles, ID, new_x, vehicle.y)
-    #             total_moves += 1
-    #             if board.isSolution() == True:
-    #                 print "Jippie"
-    #                 print total_moves
-    #                 return
-    #             counter = 0
-    #
-    #             for i in range(vehicle.x + 1, board.width - 1):
-    #                 if board.board[i][vehicle.y] == "_":
-    #                     counter += 1
-    #             # print vehicle.x + 1
-    #             # print counter
-    #             print ID
-    #             new_x = random.randrange(vehicle.x + 1, counter + 1, 1)
-    #             updateArray(board.vehicles, ID, new_x, vehicle.y)
-    #             total_moves += 1
-    #             if board.isSolution() == True:
-    #                 print "Jippie"
-    #                 print total_moves
-    #                 return
-    #             counter = 0
-    #
-    #         elif vehicle.dir == 'V':
-    #             for i in range(vehicle.y + 1, board.height - 1):
-    #                 if board.board[vehicle.x][i] == "_":
-    #                     counter += 1
-    #             new_y = random.randrange(vehicle.y + 1, counter + 1, 1)
-    #             updateArray(board.vehicles, ID, vehicle.x, new_y)
-    #             total_moves += 1
-    #             if board.isSolution() == True:
-    #                 print "Jippie"
-    #                 print total_moves
-    #                 return
-    #             counter = 0
+    print total_moves

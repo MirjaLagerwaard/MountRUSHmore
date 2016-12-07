@@ -13,6 +13,7 @@ vehicles = {}
 
 #fp = "test.csv"
 fp = "vehicles_6x6_1.csv"
+# fp = "vehicles_6x6_3.csv"
 # fp = "vehicles_9x9_1.csv"
 # fp = "vehicles_9x9_2.csv"
 # fp = "vehicles_9x9_3.csv"
