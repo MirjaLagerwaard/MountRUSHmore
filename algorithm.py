@@ -45,10 +45,11 @@ def BreadthFirstSearch(board):
 
     # while there are items in the queue
     while queue:
+
         # pop the first item of the queue (FIFO: first in, first out)
         parent_vehicles = queue.get() # pak de eerste lijst van auto's die in de queue staat
 
-        print "Layer: ", archive[toString(parent_vehicles)], " Archive_len:", len(archive)
+        print "Layer: ", archive[toString(parent_vehicles)], " Archive_len:", len(archive), "Queue_len:", len(queue)
 
         board.makeBoard(parent_vehicles) # reset het bord voor we possibleMoves gaan doen
 
@@ -73,7 +74,6 @@ def BreadthFirstSearch(board):
 
                 board.updateBoard(ID, x, y, parent_vehicles)
 
-
                 # if the child is the solution, print party and how many moves were needed, and return
                 if board.isSolution():
                     board.printBoard()
@@ -96,43 +96,50 @@ def RandomMoves(board):
 
     """
 
-    total_moves = 0
+    total_moves = 1
     new_dict = {}
     archive_list = []
+    archive_length = 5
+    counter_archive = 0
 
     while not board.isSolution():
-        for i in range(10):
-            moves = board.possibleMoves()
 
-            for i in range (0, len(moves)):
-                for j in range (0, len(moves.values()[i])):
-                    new_dict[moves.values()[i][j]] = moves.keys()[i]
+        moves = board.possibleMoves()
+        #print moves
 
+        for i in range (0, len(moves)):
+            for j in range (0, len(moves.values()[i])):
+                new_dict[moves.values()[i][j]] = moves.keys()[i]
+
+        random_move = random.choice(new_dict.keys())
+        x, y = random_move
+        ID = new_dict[random_move]
+
+        #print random_move
+
+        while [x, y, ID] in archive_list:
             random_move = random.choice(new_dict.keys())
             x, y = random_move
             ID = new_dict[random_move]
 
-            legal = False
+        #print new_dict
 
-            while not legal and len(archive_list) > 0:
-                for element in archive_list:
-                    if element[0] == x and element[1] == y and element[2] == ID:
-                        continue
-                    else:
-                        legal = True
-                random_move = random.choice(new_dict.keys())
-                x, y = random_move
-                ID = new_dict[random_move]
+        archive_list.append([x, y, ID])
+        counter_archive += 1
 
-            total_moves += 1
-            print total_moves
-            
-            archive_list.append([x, y, ID])
-            board.updateBoard(ID, x, y, board.vehicles)
-            board.vehicles = updateArray(ID, x, y, board.vehicles)
-            new_dict = {}
+        #print archive_list
+        board.updateBoard(ID, x, y, board.vehicles)
+        board.vehicles = updateArray(ID, x, y, board.vehicles)
+        #board.printBoard()
 
-        archive_list = []
+        total_moves += 1
+        print total_moves
+
+        new_dict = {}
+
+        if counter_archive == 5:
+            counter_archive = 0
+            archive_list = []
 
     print "Firework, Champagne, Confetti!"
     print total_moves
