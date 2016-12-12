@@ -10,23 +10,34 @@ from algorithm import *
 #6x6_1 Mirja haar pc: 15 sec runtime (waarvan 9 sec bezig in deepcopy)
 
 vehicles = {}
-#
+
 # fp = "test.csv"
 # fp = "vehicles_6x6_1.csv"
 # fp = "vehicles_6x6_3.csv"
 
-# 9 zetten -> Breadth 10 zetten
+# 9 zetten -> Breadth 10 zetten -> Depth 13 zetten
 # fp = "vehicles_6x6_game1.csv"
 
-# 16 zetten -> Breadth 16 zetten
+# 16 zetten -> Breadth 16 zetten -> Depth 25 zetten
 # fp = "vehicles_6x6_game2.csv"
 
-# 16 zetten
-fp = "vehicles_6x6_game3.csv"
+# 16 zetten -> Breadth loopt vast -> Depth 131 zetten
+# fp = "vehicles_6x6_game3.csv"
 
+# 15 zetten -> Breadth 21 zetten -> Depth 822 zetten
+# fp = "vehicles_6x6_game4.csv"
+
+# Depth 15795 zetten
 # fp = "vehicles_9x9_1.csv"
-# fp = "vehicles_9x9_2.csv"
+
+# Breadth 24 zetten
+fp = "vehicles_9x9_2.csv"
+
+# Depth
 # fp = "vehicles_9x9_3.csv"
+
+#
+# fp = "vehicles_12x12.csv"
 
 
 def main():
@@ -35,8 +46,8 @@ def main():
         for vehicle in reader_vehicles:
             vehicles[vehicle[1]] = Vehicle(vehicle[0], vehicle[1], int(vehicle[2]), int(vehicle[3]), int(vehicle[4]))
 
-    Board1 = Board(6, 6, 1, vehicles)
-    BreadthFirstSearch(Board1)
+    Board1 = Board(9, 9, 4, vehicles)
+    DepthFirstSearch(Board1)
 
 if __name__ == "__main__":
     main()
