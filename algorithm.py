@@ -1,6 +1,9 @@
 import copy
 import Queue
 import random
+import numpy as np
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plt
 
 def toString(vehicles):
     """
@@ -34,50 +37,62 @@ def Random(board):
     TODO
     """
 
-    total_moves = 1
-    new_dict = {}
-    archive_list = []
-    archive_length = 5
-    counter_archive = 0
+    plot_moves = []
+    original_board = copy.deepcopy(board)
 
-    #for i in range(100):
-    while not board.isSolution():
+    for i in range(4000):
 
-        moves = board.possibleMoves()
+        print "iteration: ", i
+        total_moves = 1
+        new_list = []
+        archive_list = []
+        archive_length = 1
+        counter_archive = 0
+        board = copy.deepcopy(original_board)
 
-        for i in range (0, len(moves)):
-            for j in range (0, len(moves.values()[i])):
-                new_dict[moves.values()[i][j]] = moves.keys()[i]
+        while not board.isSolution():
 
-        random_move = random.choice(new_dict.keys())
-        x, y = random_move
-        ID = new_dict[random_move]
+            moves = board.possibleMoves()
 
-        while [x, y, ID] in archive_list:
-            random_move = random.choice(new_dict.keys())
+            for i in range (0, len(moves)):
+                for j in range (0, len(moves.values()[i])):
+                    new_list.append((moves.values()[i][j], moves.keys()[i]))
+
+            #Total random:
+            random_move, ID = random.choice(new_list)
             x, y = random_move
-            ID = new_dict[random_move]
 
-        archive_list.append([x, y, ID])
-        counter_archive += 1
+            # Pseudo random:
+            # ID = random.choice(moves.keys())
+            # x, y = random.choice(moves[ID])
 
-        board.updateBoard(ID, x, y, board.vehicles)
-        board.vehicles = updateArray(ID, x, y, board.vehicles)
+            # Archive:
+            # while [x, y, ID] in archive_list:
+            #     random_move, ID = random.choice(new_list)
+            #     x, y = random_move
+            # archive_list.append([x, y, ID])
+            # counter_archive += 1
+            #
+            # if counter_archive == archive_length:
+            #     counter_archive = 0
+            #     archive_list = []
 
-        total_moves += 1
+            board.updateBoard(ID, x, y, board.vehicles)
+            board.vehicles = updateArray(ID, x, y, board.vehicles)
 
-        if total_moves >= 2:
-            print "More than 200 moves were needed."
-            break
+            total_moves += 1
 
-        new_dict = {}
+            new_list = []
 
-        if counter_archive == 5:
-            counter_archive = 0
-            archive_list = []
+        if board.isSolution():
+            print str(total_moves) + " moves were needed."
+            plot_moves.append(total_moves)
 
-    if total_moves <= 200:
-        print str(total_moves) + " moves were needed."
+    n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='green', alpha=0.75)
+    plt.show()
+
+    plot_moves.sort()
+    print plot_moves[0]
 
 def DepthFirstSearch(board):
     """

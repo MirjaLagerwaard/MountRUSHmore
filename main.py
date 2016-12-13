@@ -11,7 +11,7 @@ from algorithm import *
 
 vehicles = {}
 
-fp = "test.csv"
+# fp = "test.csv"
 # fp = "vehicles_6x6_1.csv"
 # fp = "vehicles_6x6_3.csv"
 
@@ -36,8 +36,8 @@ fp = "test.csv"
 # Depth memory error
 # fp = "vehicles_9x9_3.csv"
 
-#
-# fp = "vehicles_12x12.csv"
+# Random 2622 zetten
+fp = "vehicles_12x12.csv"
 
 
 def main():
@@ -46,7 +46,7 @@ def main():
         for vehicle in reader_vehicles:
             vehicles[vehicle[1]] = Vehicle(vehicle[0], vehicle[1], int(vehicle[2]), int(vehicle[3]), int(vehicle[4]))
 
-    Board1 = Board(6, 6, 2, vehicles)
+    Board1 = Board(12, 12, 5, vehicles)
     Random(Board1)
 
 if __name__ == "__main__":
