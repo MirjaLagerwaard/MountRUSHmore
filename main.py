@@ -11,7 +11,7 @@ from algorithm import *
 
 vehicles = {}
 
-# fp = "test.csv"
+fp = "test.csv"
 # fp = "vehicles_6x6_1.csv"
 # fp = "vehicles_6x6_3.csv"
 
@@ -30,10 +30,10 @@ vehicles = {}
 # Depth 15795 zetten
 # fp = "vehicles_9x9_1.csv"
 
-# Breadth 24 zetten
-fp = "vehicles_9x9_2.csv"
+# Breadth 24 zetten -> Depth memory error
+# fp = "vehicles_9x9_2.csv"
 
-# Depth
+# Depth memory error
 # fp = "vehicles_9x9_3.csv"
 
 #
@@ -46,8 +46,8 @@ def main():
         for vehicle in reader_vehicles:
             vehicles[vehicle[1]] = Vehicle(vehicle[0], vehicle[1], int(vehicle[2]), int(vehicle[3]), int(vehicle[4]))
 
-    Board1 = Board(9, 9, 4, vehicles)
-    DepthFirstSearch(Board1)
+    Board1 = Board(6, 6, 2, vehicles)
+    Random(Board1)
 
 if __name__ == "__main__":
     main()

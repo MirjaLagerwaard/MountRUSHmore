@@ -29,7 +29,7 @@ def updateArray (ID, x, y, vehicles):
 
     return vehicles
 
-def RandomMoves(board):
+def Random(board):
     """
     TODO
     """
@@ -40,10 +40,10 @@ def RandomMoves(board):
     archive_length = 5
     counter_archive = 0
 
+    #for i in range(100):
     while not board.isSolution():
 
         moves = board.possibleMoves()
-        #print moves
 
         for i in range (0, len(moves)):
             for j in range (0, len(moves.values()[i])):
@@ -53,25 +53,22 @@ def RandomMoves(board):
         x, y = random_move
         ID = new_dict[random_move]
 
-        #print random_move
-
         while [x, y, ID] in archive_list:
             random_move = random.choice(new_dict.keys())
             x, y = random_move
             ID = new_dict[random_move]
 
-        #print new_dict
-
         archive_list.append([x, y, ID])
         counter_archive += 1
 
-        #print archive_list
         board.updateBoard(ID, x, y, board.vehicles)
         board.vehicles = updateArray(ID, x, y, board.vehicles)
-        #board.printBoard()
 
         total_moves += 1
-        print total_moves
+
+        if total_moves >= 2:
+            print "More than 200 moves were needed."
+            break
 
         new_dict = {}
 
@@ -79,8 +76,8 @@ def RandomMoves(board):
             counter_archive = 0
             archive_list = []
 
-    print "Firework, Champagne, Confetti!"
-    print total_moves
+    if total_moves <= 200:
+        print str(total_moves) + " moves were needed."
 
 def DepthFirstSearch(board):
     """

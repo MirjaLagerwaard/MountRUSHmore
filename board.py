@@ -65,8 +65,8 @@ class Board(object):
             for i in range(old_vehicles[ID].size):
                 self.board[x][y - i] = ID
 
-            # prints the board with the vehicle on his new position
-            # self.printBoard()
+        # prints the board with the vehicle on his new position
+        # self.printBoard()
 
     def possibleMoves(self):
         """
