@@ -151,8 +151,8 @@ class Board(object):
         """
 
         # iterate over each vehicle in list 'hor_auto'
-        for i in range(self.vehicles["#"].x + 1, self.width):
+        for i in range(self.vehicles['#'].x + 1, self.width):
             # check if the way to the EXIT is free
-            if self.board[i][self.vehicles["#"].y] != "_":
+            if self.board[i][self.vehicles['#'].y] != "_":
                 return False
         return True

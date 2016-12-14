@@ -17,10 +17,10 @@ def toString(vehicles):
     for _, vehicle in vehicles.iteritems():
         # store the x-coordinate when
         if vehicle.dir == 'H':
-            s += str(vehicle.dir) + str(vehicle.ID) + str(vehicle.x) + str(vehicle.size)
+            s += str(vehicle.x)
 
         if vehicle.dir == 'V':
-            s += str(vehicle.dir) + str(vehicle.ID) + str(vehicle.y) + str(vehicle.size)
+            s += str(vehicle.y)
 
     return s
 
@@ -44,7 +44,7 @@ def Random(board):
     plot_moves = []
     original_board = copy.deepcopy(board)
 
-    for i in range(60000):
+    for i in range(450000):
 
         print "Iteration: ", i
         total_moves = 1
@@ -84,8 +84,8 @@ def Random(board):
     plot_moves.sort()
     print plot_moves
 
-    n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='green', alpha=0.75)
-    plt.show()
+    # n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='green', alpha=0.75)
+    # plt.show()
 
 
 def DepthFirstSearch(board):
@@ -125,7 +125,7 @@ def DepthFirstSearch(board):
 
                 # if the child is in the archive, break out of loop
                 if toString(child_vehicles) in archive:
-                    break
+                    continue
 
                 board.updateBoard(ID, x, y, parent_vehicles)
 
@@ -164,7 +164,7 @@ def BreadthFirstSearch(board):
     queue.put(board.vehicles) # stopt alleen nog maar de auto's in de queue
 
     # while there are items in the queue
-    while queue:
+    while queue.qsize():
         # pop the first item of the queue (FIFO: first in, first out)
         parent_vehicles = queue.get() # pak de eerste lijst van auto's die in de queue staat
 
@@ -179,6 +179,7 @@ def BreadthFirstSearch(board):
         for ID, move_list in moves.iteritems():
             # iterate over each x- and y-coordinate
             for (x, y) in move_list:
+
                 # make a copy of the child state
                 child_vehicles = copy.deepcopy(parent_vehicles)
 
@@ -189,25 +190,31 @@ def BreadthFirstSearch(board):
 
                 # if the child is in the archive, break out of loop
                 if toString(child_vehicles) in archive:
-                    break
+                    continue
+
+                archive[toString(child_vehicles)] = parent_vehicles
 
                 board.updateBoard(ID, x, y, parent_vehicles)
-                archive[toString(child_vehicles)] = parent_vehicles
                 # if the child is the solution, print party and how many moves were needed, and return
                 if board.isSolution():
-                    board.printBoard()
                     print "Firework, Champagne, Confetti!"
-                    print str(len(archive[toString(parent_vehicles)]) + 2 ) + " moves were needed."
-                    crawler = archive[toString(parent_vehicles)]
-                    while archive[toString(crawler)] != 0:
-                    # while archive[crawler] != 0:
-                        print type(crawler)
-                        board.makeBoard(crawler)
-                        crawler = archive[toString(crawler)]
-                        board.printBoard()
-                    return
 
-                # add the child state to archive and report the depth of the graph
+                    solution_list = []
+
+                    solution_list.append(copy.deepcopy(board))
+
+                    crawler = archive[toString(child_vehicles)]
+                    while archive[toString(crawler)] != 0:
+                        board.makeBoard(crawler)
+                        solution_list.append(copy.deepcopy(board))
+                        crawler = archive[toString(crawler)]
+
+                    for i, boards in enumerate(solution_list[::-1]):
+                        print "Moves: ", i
+                        boards.printBoard()
+
+                    print "Total moves: ", i + 2
+                    return
 
                 # add the children of the parent state to the queue
                 queue.put(child_vehicles)
@@ -215,3 +222,5 @@ def BreadthFirstSearch(board):
                 old_x = parent_vehicles[ID].x
                 old_y = parent_vehicles[ID].y
                 board.updateBoard(ID, old_x, old_y, child_vehicles)
+
+    print "No solution found."
