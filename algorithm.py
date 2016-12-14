@@ -10,9 +10,12 @@ def toString(vehicles):
     Makes a string of the state of the board.
     """
 
+    # make string
     s = ""
 
+    # iterate over each vehicle in the array with vehicles
     for _, vehicle in vehicles.iteritems():
+        # store the x-coordinate when
         if vehicle.dir == 'H':
             s += str(vehicle.x)
         if vehicle.dir == 'V':
@@ -40,7 +43,7 @@ def Random(board):
     plot_moves = []
     original_board = copy.deepcopy(board)
 
-    for i in range(1000):
+    for i in range(30000):
 
         print "Iteration: ", i
         total_moves = 1
@@ -50,7 +53,7 @@ def Random(board):
         counter_archive = 0
         board = copy.deepcopy(original_board)
 
-        while not board.isSolution() and total_moves < 527:
+        while not board.isSolution() and total_moves < 175:
 
             moves = board.possibleMoves()
 
@@ -62,20 +65,9 @@ def Random(board):
             random_move, ID = random.choice(new_list)
             x, y = random_move
 
-            # Pseudo random:
+            # Pseudorandom:
             # ID = random.choice(moves.keys())
             # x, y = random.choice(moves[ID])
-
-            # Archive:
-            # while [x, y, ID] in archive_list:
-            #     random_move, ID = random.choice(new_list)
-            #     x, y = random_move
-            # archive_list.append([x, y, ID])
-            # counter_archive += 1
-            #
-            # if counter_archive == archive_length:
-            #     counter_archive = 0
-            #     archive_list = []
 
             board.updateBoard(ID, x, y, board.vehicles)
             board.vehicles = updateArray(ID, x, y, board.vehicles)
@@ -104,9 +96,8 @@ def DepthFirstSearch(board):
     before backtracking.
     """
 
-    # make a stack
     stack = []
-    archive = {toString(board.vehicles): 0} # hash van startbord (board1)
+    archive = {toString(board.vehicles): 0}
 
     stack.append(board.vehicles)
 
@@ -144,7 +135,7 @@ def DepthFirstSearch(board):
                     print str(archive[toString(parent_vehicles)] + 2) + " moves were needed."
                     return
 
-                # add the child state to archive and report the depth of the graph
+                # add the child state to archive
                 archive[toString(child_vehicles)] = archive[toString(parent_vehicles)] + 1
 
                 # add the children of the parent state to the queue
@@ -207,10 +198,16 @@ def BreadthFirstSearch(board):
                     board.printBoard()
                     print "Firework, Champagne, Confetti!"
                     print str(archive[toString(parent_vehicles)] + 2) + " moves were needed."
+                    crawler = archive[toString(parent_vehicles)]
+                    while archive[crawler] != 0:
+                        board
+                        print board
+                        crawler = archive[crawler]
+
                     return
 
                 # add the child state to archive and report the depth of the graph
-                archive[toString(child_vehicles)] = archive[toString(parent_vehicles)] + 1
+                archive[toString(child_vehicles)] = toString(parent_vehicles)
 
                 # add the children of the parent state to the queue
                 queue.put(child_vehicles)

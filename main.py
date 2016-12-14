@@ -36,7 +36,7 @@ vehicles = {}
 # Depth memory error
 # fp = "vehicles_9x9_3.csv"
 
-# Random's best: 527 zetten -> 
+# Random's best: 454 zetten -> 
 fp = "vehicles_12x12.csv"
 
 
