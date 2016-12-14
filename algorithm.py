@@ -17,9 +17,10 @@ def toString(vehicles):
     for _, vehicle in vehicles.iteritems():
         # store the x-coordinate when
         if vehicle.dir == 'H':
-            s += str(vehicle.x)
+            s += str(vehicle.dir) + str(vehicle.ID) + str(vehicle.x) + str(vehicle.size)
+
         if vehicle.dir == 'V':
-            s += str(vehicle.y)
+            s += str(vehicle.dir) + str(vehicle.ID) + str(vehicle.y) + str(vehicle.size)
 
     return s
 
@@ -164,11 +165,10 @@ def BreadthFirstSearch(board):
 
     # while there are items in the queue
     while queue:
-
         # pop the first item of the queue (FIFO: first in, first out)
         parent_vehicles = queue.get() # pak de eerste lijst van auto's die in de queue staat
 
-        print "Layer: ", archive[toString(parent_vehicles)], " Archive_len:", len(archive)
+        # print "Layer: ", archive[toString(parent_vehicles)], " Archive_len:", len(archive)
 
         board.makeBoard(parent_vehicles) # reset het bord voor we possibleMoves gaan doen
 
@@ -192,22 +192,22 @@ def BreadthFirstSearch(board):
                     break
 
                 board.updateBoard(ID, x, y, parent_vehicles)
-
+                archive[toString(child_vehicles)] = parent_vehicles
                 # if the child is the solution, print party and how many moves were needed, and return
                 if board.isSolution():
                     board.printBoard()
                     print "Firework, Champagne, Confetti!"
-                    print str(archive[toString(parent_vehicles)] + 2) + " moves were needed."
+                    print str(len(archive[toString(parent_vehicles)]) + 2 ) + " moves were needed."
                     crawler = archive[toString(parent_vehicles)]
-                    while archive[crawler] != 0:
-                        board
-                        print board
-                        crawler = archive[crawler]
-
+                    while archive[toString(crawler)] != 0:
+                    # while archive[crawler] != 0:
+                        print type(crawler)
+                        board.makeBoard(crawler)
+                        crawler = archive[toString(crawler)]
+                        board.printBoard()
                     return
 
                 # add the child state to archive and report the depth of the graph
-                archive[toString(child_vehicles)] = toString(parent_vehicles)
 
                 # add the children of the parent state to the queue
                 queue.put(child_vehicles)

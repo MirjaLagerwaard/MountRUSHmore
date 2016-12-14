@@ -25,7 +25,7 @@ vehicles = {}
 # fp = "vehicles_6x6_game3.csv"
 
 # 15 zetten -> Breadth 21 zetten -> Depth 822 zetten
-# fp = "vehicles_6x6_game4.csv"
+fp = "vehicles_6x6_game4.csv"
 
 # Depth 15795 zetten
 # fp = "vehicles_9x9_1.csv"
@@ -36,8 +36,8 @@ vehicles = {}
 # Depth memory error
 # fp = "vehicles_9x9_3.csv"
 
-# Random's best: 454 zetten -> 
-fp = "vehicles_12x12.csv"
+# Random's best: 454 zetten ->
+# fp = "vehicles_12x12.csv"
 
 
 def main():
@@ -46,8 +46,8 @@ def main():
         for vehicle in reader_vehicles:
             vehicles[vehicle[1]] = Vehicle(vehicle[0], vehicle[1], int(vehicle[2]), int(vehicle[3]), int(vehicle[4]))
 
-    Board1 = Board(12, 12, 5, vehicles)
-    Random(Board1)
+    Board1 = Board(6, 6, 2, vehicles)
+    BreadthFirstSearch(Board1)
 
 if __name__ == "__main__":
     main()
