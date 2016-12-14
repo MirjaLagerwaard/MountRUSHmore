@@ -43,7 +43,7 @@ def Random(board):
     plot_moves = []
     original_board = copy.deepcopy(board)
 
-    for i in range(30000):
+    for i in range(60000):
 
         print "Iteration: ", i
         total_moves = 1
