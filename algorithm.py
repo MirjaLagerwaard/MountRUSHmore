@@ -40,9 +40,9 @@ def Random(board):
     plot_moves = []
     original_board = copy.deepcopy(board)
 
-    for i in range(4000):
+    for i in range(1000):
 
-        print "iteration: ", i
+        print "Iteration: ", i
         total_moves = 1
         new_list = []
         archive_list = []
@@ -50,7 +50,7 @@ def Random(board):
         counter_archive = 0
         board = copy.deepcopy(original_board)
 
-        while not board.isSolution():
+        while not board.isSolution() and total_moves < 527:
 
             moves = board.possibleMoves()
 
@@ -88,11 +88,12 @@ def Random(board):
             print str(total_moves) + " moves were needed."
             plot_moves.append(total_moves)
 
+    plot_moves.sort()
+    print plot_moves
+
     n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='green', alpha=0.75)
     plt.show()
 
-    plot_moves.sort()
-    print plot_moves[0]
 
 def DepthFirstSearch(board):
     """
