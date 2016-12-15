@@ -13,7 +13,7 @@ vehicles = {}
 # fp = "vehicles_6x6_1.csv"
 
 # Breadth 15 zetten
-# fp = "vehicles_6x6_2.csv"
+fp = "vehicles_6x6_2.csv"
 
 # Breadth 21 zetten
 # fp = "vehicles_6x6_3.csv"
@@ -49,7 +49,7 @@ def main():
             vehicles[vehicle[1]] = Vehicle(vehicle[0], vehicle[1], int(vehicle[2]), int(vehicle[3]), int(vehicle[4]))
 
     Board1 = Board(12, 12, 5, vehicles)
-    Random(Board1)
+    DepthFirstSearch(Board1)
 
 if __name__ == "__main__":
     main()

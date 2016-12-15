@@ -44,7 +44,7 @@ def Random(board):
     plot_moves = []
     original_board = copy.deepcopy(board)
 
-    for i in range(450000):
+    for i in range(10):
 
         print "Iteration: ", i
         total_moves = 1
@@ -84,8 +84,8 @@ def Random(board):
     plot_moves.sort()
     print plot_moves
 
-    # n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='green', alpha=0.75)
-    # plt.show()
+    n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='grey', alpha=0.75)
+    plt.show()
 
 
 def DepthFirstSearch(board):
@@ -99,16 +99,14 @@ def DepthFirstSearch(board):
 
     stack = []
     archive = {toString(board.vehicles): 0}
+    bound = 175
 
     stack.append(board.vehicles)
 
-    while stack:
+    while stack > 0 and bound < 175:
+
         parent_vehicles = stack.pop()
-
-        print "Archive_len:", len(archive)
-
         board.makeBoard(parent_vehicles)
-
         moves = board.possibleMoves()
 
         # iterate over each possible move
@@ -121,20 +119,34 @@ def DepthFirstSearch(board):
                 # update array
                 child_vehicles = updateArray(ID, x, y, child_vehicles)
 
-                # print len(archive)
-
-                # if the child is in the archive, break out of loop
                 if toString(child_vehicles) in archive:
                     continue
 
                 board.updateBoard(ID, x, y, parent_vehicles)
 
-                # if the child is the solution, print party and how many moves were needed, and return
                 if board.isSolution():
-                    board.printBoard()
-                    print "Firework, Champagne, Confetti!"
-                    print str(archive[toString(parent_vehicles)] + 2) + " moves were needed."
-                    return
+                    # hoeveel stappen heeft het gekost = in welke diepte zit je om bij deze oplossing te komen?
+                    # stel dit in als nieuwe bound (bound = nieuw getal)
+                    # ga verder
+
+                    # print "Firework, Champagne, Confetti!"
+                    #
+                    # solution_list = []
+                    #
+                    # solution_list.append(copy.deepcopy(board))
+                    #
+                    # crawler = archive[toString(child_vehicles)]
+                    # while archive[toString(crawler)] != 0:
+                    #     board.makeBoard(crawler)
+                    #     solution_list.append(copy.deepcopy(board))
+                    #     crawler = archive[toString(crawler)]
+                    #
+                    # for i, boards in enumerate(solution_list[::-1]):
+                    #     print "Moves: ", i
+                    #     boards.printBoard()
+                    #
+                    # print "Total moves: ", i + 2
+                    # return
 
                 # add the child state to archive
                 archive[toString(child_vehicles)] = archive[toString(parent_vehicles)] + 1
