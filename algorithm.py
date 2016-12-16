@@ -150,7 +150,7 @@ def DepthFirstSearch(board, max_depth, solution_list):
                 if (toString(child_vehicles), depth + 1) in archive:
                     continue
 
-                print "Depth: ", depth, "Stack: ", len(stack), "Archive: ", len(archive), "Max-depth: ", max_depth
+                print "Depth: ", depth, "Stack: ", len(stack), "Archive: ", len(archive), "Max depth: ", max_depth
 
                 # hash the parent state with as key the child state
                 archive[(toString(child_vehicles), depth + 1)] = parent_vehicles
