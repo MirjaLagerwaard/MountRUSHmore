@@ -19,7 +19,7 @@ vehicles = {}
 # fp = "vehicles_6x6_3.csv"
 
 # Card 9 zetten -> Breadth 9 zetten -> Depth 13
-fp = "vehicles_6x6_game1.csv"
+# fp = "vehicles_6x6_game1.csv"
 
 # Card 16 zetten -> Breadth 16 zetten -> Depth 49
 # fp = "vehicles_6x6_game2.csv"
@@ -40,7 +40,7 @@ fp = "vehicles_6x6_game1.csv"
 # fp = "vehicles_9x9_3.csv"
 
 # Random's best: 175 zetten
-# fp = "vehicles_12x12.csv"
+fp = "vehicles_12x12.csv"
 
 def main():
     with open(fp, "rb") as fileRushhour:
