@@ -45,31 +45,24 @@ def Random(board):
     Picks a random possible move untill solution is found.
     """
 
-    # create list for the amount of moves
     plot_moves = []
-    # make copy of the original board
     original_board = copy.deepcopy(board)
-    # set the amount of desired iterations
     iterations = 10
 
     # loop iterations times
     for i in range(iterations):
 
-        # print the current iteration
         print "Iteration: ", i
         # reset board to original board
         board = copy.deepcopy(original_board)
         # set counter for the amount of moves to 1, because moving the red car to the EXIT is also a move
         total_moves = 1
-        # create list for converting the list of moves
         converted_list = []
-        # create list as archive
         archive_list = []
 
         # loop untill the solution of the board is found
         while not board.isSolution():
 
-            # get all possible moves
             moves = board.possibleMoves()
 
             # loop over every vehicle which can move (using the ID of the vehicle)
@@ -81,33 +74,26 @@ def Random(board):
 
             # pick a random possible move
             random_move, ID = random.choice(converted_list)
-            # make seperate variables of the x- and y-coordinate of the random move
             x, y = random_move
 
-            # update board after the random move
+            # update board and array after the random move
             board.updateBoard(ID, x, y, board.vehicles)
-            # update the vehicle array after the random move
             board.vehicles = updateArray(ID, x, y, board.vehicles)
 
-            # update the amount of moves
             total_moves += 1
-            # clear the list with possible moves
             converted_list = []
 
         if board.isSolution():
-            # print the total amount of moves
             print str(total_moves) + " moves were needed."
             # store the sample of the amount of moves in list plot moves
             plot_moves.append(total_moves)
 
-    # sort the list with the samples of moves
+    # sort list of moves, so the less amount of moves is plotted first
     plot_moves.sort()
-    # plot the list with the samples of moves
     print plot_moves
 
-    # make histogram of the sample
+    # make a histogram of the random sample
     n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='grey', alpha=0.75)
-    # show histogram
     plt.show()
 
 
@@ -127,7 +113,6 @@ def DepthFirstSearch(board, max_depth, solution_list):
     # loop untill stack is empty
     while len(stack) > 0:
 
-        # get the first board of the stack (i.e. parent)
         parent_vehicles, depth = stack.pop()
 
         if depth >= max_depth:
@@ -178,7 +163,7 @@ def DepthFirstSearch(board, max_depth, solution_list):
                         depth -= 1
 
                     # total moves = i + 2, because the beginstate and moving the red car to the EXIT are also moves
-                    return len(solution_list), solution_list
+                    return len(solution_list) - 1, solution_list
 
                 # add the children of the parent state to the queue
                 stack.append((child_vehicles, depth + 1))

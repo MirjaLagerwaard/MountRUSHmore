@@ -19,13 +19,13 @@ vehicles = {}
 # fp = "vehicles_6x6_3.csv"
 
 # Card 9 zetten -> Breadth 9 zetten -> Depth 13
-# fp = "vehicles_6x6_game1.csv"
+fp = "vehicles_6x6_game1.csv"
 
 # Card 16 zetten -> Breadth 16 zetten -> Depth 49
 # fp = "vehicles_6x6_game2.csv"
 
 # Card 16 zetten -> Breadth 16 -> Depth 485
-fp = "vehicles_6x6_game3.csv"
+# fp = "vehicles_6x6_game3.csv"
 
 # Card 15 zetten -> Breadth 15 zetten -> Depth 160
 # fp = "vehicles_6x6_game4.csv"
@@ -48,20 +48,21 @@ def main():
         for vehicle in reader_vehicles:
             vehicles[vehicle[1]] = Vehicle(vehicle[0], vehicle[1], int(vehicle[2]), int(vehicle[3]), int(vehicle[4]))
 
-    Board1 = Board(6, 6, 2, vehicles)
-    max_depth = 20
+    Board1 = Board(12, 12, 5, vehicles)
+    max_depth = 174
     solution_list = []
     while max_depth != -1:
         print "Current max_depth: ", max_depth
         max_depth, solution_list = DepthFirstSearch(Board1, max_depth, solution_list)
-        Board1 = Board(6, 6, 2, vehicles)
+        Board1 = Board(12, 12, 5, vehicles)
 
+    Board1.printBoard()
     # iterate backwards over de parent boards in solution list
+    i = 0
     for i, boards in enumerate(solution_list[::-1]):
         # print the number of moves
-        print "s: ", i
-        # print the board
         boards.printBoard()
+    print i + 2, "moves were needed."
 
 if __name__ == "__main__":
     main()
