@@ -47,7 +47,7 @@ def Random(board):
 
     plot_moves = []
     original_board = copy.deepcopy(board)
-    iterations = 10
+    iterations = 10000
 
     # loop iterations times
     for i in range(iterations):
@@ -87,6 +87,73 @@ def Random(board):
             print str(total_moves) + " moves were needed."
             # store the sample of the amount of moves in list plot moves
             plot_moves.append(total_moves)
+
+    # sort list of moves, so the less amount of moves is plotted first
+    plot_moves.sort()
+    print plot_moves
+
+    # make a histogram of the random sample
+    n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='grey', alpha=0.75)
+    plt.show()
+
+def Random_Path(board):
+    """
+    Picks a random possible move untill solution is found.
+    """
+
+    plot_moves = []
+    original_board = copy.deepcopy(board)
+    iterations = 10
+
+    # loop iterations times
+    for i in range(iterations):
+
+        print "Iteration: ", i
+
+        # reset board to original board
+        board = copy.deepcopy(original_board)
+        # set counter for the amount of moves to 1, because moving the red car to the EXIT is also a move
+        total_moves = 1
+        converted_list = []
+        solution_list = [original_board]
+
+        # loop untill the solution of the board is found
+        while not board.isSolution() and total_moves < 1000:
+
+            moves = board.possibleMoves()
+
+            # loop over every vehicle which can move (using the ID of the vehicle)
+            for ID in range (0, len(moves)):
+                # loop over every move one vehicle can make
+                for move in range (0, len(moves.values()[ID])):
+                    # store every single move of the vehicle as tuple in converted list
+                    converted_list.append((moves.values()[ID][move], moves.keys()[ID]))
+
+            # pick a random possible move
+            random_move, ID = random.choice(converted_list)
+            x, y = random_move
+
+            # update board and array after the random move
+            board.updateBoard(ID, x, y, board.vehicles)
+            board.vehicles = updateArray(ID, x, y, board.vehicles)
+
+            solution_list.append(copy.deepcopy(board))
+
+            total_moves += 1
+            converted_list = []
+
+            if board.isSolution():
+
+                # store the sample of the amount of moves in list plot moves
+                plot_moves.append(total_moves)
+
+                # iterate backwards over de parent boards in solution list
+                for i, boards in enumerate(solution_list):
+                    # print the number of moves
+                    print "move: ", i
+                    # print the board
+                    boards.printBoard()
+                print str(total_moves) + " moves were needed."
 
     # sort list of moves, so the less amount of moves is plotted first
     plot_moves.sort()
@@ -190,11 +257,12 @@ def BreadthFirstSearch(board):
     # create archive and hash the beginstate array of vehicles
     archive = {toString(board.vehicles): 0}
     # create queue and and store the beginstate array of vehicles
-    queue = Queue.Queue(board.vehicles)
+    queue = Queue.Queue()
+
+    queue.put(board.vehicles)
 
     # loop untill queue is empty
     while queue.qsize():
-
         # get the first board of the queue (i.e. parent)
         parent_vehicles = queue.get()
         # reset board with board from the queue
