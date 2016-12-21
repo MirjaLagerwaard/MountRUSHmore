@@ -103,11 +103,7 @@ def Random_Path(board):
 
     plot_moves = []
     original_board = copy.deepcopy(board)
-<<<<<<< HEAD
-    iterations = 1
-=======
-    iterations = 25000
->>>>>>> origin/master
+    iterations = 100
 
     # loop iterations times
     for i in range(iterations):
@@ -117,12 +113,13 @@ def Random_Path(board):
         # reset board to original board
         board = copy.deepcopy(original_board)
         # set counter for the amount of moves to 1, because moving the red car to the EXIT is also a move
-        total_moves = 1
+        total_moves = 0
+        total_moves_print = 0
         converted_list = []
         solution_list = [original_board]
 
         # loop untill the solution of the board is found
-        while not board.isSolution():
+        while not board.isSolution() and total_moves < 10000:
 
             moves = board.possibleMoves()
 
@@ -136,6 +133,7 @@ def Random_Path(board):
             # pick a random possible move
             random_move, ID = random.choice(converted_list)
             x, y = random_move
+            total_moves += 1
 
             # update board and array after the random move
             board.updateBoard(ID, x, y, board.vehicles)
@@ -143,38 +141,48 @@ def Random_Path(board):
 
             solution_list.append(copy.deepcopy(board))
 
-            total_moves += 1
             converted_list = []
 
             if board.isSolution():
 
-                # store the sample of the amount of moves in list plot moves
-                plot_moves.append(total_moves)
-
-                # solution_list bewerken en dubbele staten eruit halen
-                for i in range(len(solution_list)):
-                    for j in range(1, len(solution_list)):
-                        if solution_list[i] == solution_list[j]:
-                            solution_listA = solution_list[:i]
-                            solution_listB = solution_list[j:]
-                            solution_list = solution_listA + solution_listB
+                found = True
+                range_i = 0
+                while found:
+                    found = False
+                    for i in range(range_i, len(solution_list)):
+                        state1 = toString(solution_list[i].vehicles)
+                        range_i = i
+                        for j in range(len(solution_list)-1, range_i, -1):
+                            state2 = toString(solution_list[j].vehicles)
+                            if state1 == state2:
+                                solution_listA = solution_list[:i]
+                                solution_listB = solution_list[j:]
+                                solution_list = solution_listA + solution_listB
+                                found = True
+                                break
+                        if found:
+                            break
 
                 # iterate backwards over de parent boards in solution list
                 for i, boards in enumerate(solution_list):
-                    
                     # print the number of moves
                     print "move: ", i
                     # print the board
                     boards.printBoard()
-                print str(total_moves) + " moves were needed."
+                    total_moves_print += 1
+                print total_moves_print, " moves were needed."
 
-    # sort list of moves, so the less amount of moves is plotted first
-    plot_moves.sort()
-    print plot_moves
-
-    # make a histogram of the random sample
-    n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='grey', alpha=0.75)
-    plt.show()
+    #             # store the sample of the amount of moves in list plot moves
+    #             plot_moves.append(total_moves_print)
+    #
+    #
+    # # sort list of moves, so the less amount of moves is plotted first
+    # plot_moves.sort()
+    # print plot_moves
+    #
+    # # make a histogram of the random sample
+    # n, bins, patches = plt.hist(plot_moves, 15, normed=1, facecolor='grey', alpha=0.75)
+    # plt.show()
 
 
 def DepthFirstSearch(board, max_depth, solution_list):
