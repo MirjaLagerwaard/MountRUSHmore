@@ -10,7 +10,7 @@ vehicles = {}
 # fp = "test.csv"
 
 # Breadth 33 zetten -> Aangepaste Depth ... -> Randoms Best ...
-# fp = "vehicles_6x6_1.csv"
+fp = "vehicles_6x6_1.csv"
 
 # Breadth 15 zetten -> Aangepaste Depth 15 zetten -> Random's Best ...
 # fp = "vehicles_6x6_2.csv"
@@ -40,7 +40,7 @@ vehicles = {}
 # fp = "vehicles_9x9_3.csv"
 
 # Random's best: 175 zetten
-fp = "vehicles_12x12.csv"
+# fp = "vehicles_12x12.csv"
 
 def main():
     with open(fp, "rb") as fileRushhour:
@@ -48,7 +48,7 @@ def main():
         for vehicle in reader_vehicles:
             vehicles[vehicle[1]] = Vehicle(vehicle[0], vehicle[1], int(vehicle[2]), int(vehicle[3]), int(vehicle[4]))
 
-    Board1 = Board(12, 12, 5, vehicles)
+    Board1 = Board(6, 6, 2, vehicles)
     Random_Path(Board1)
     # max_depth = 35
     # solution_list = []

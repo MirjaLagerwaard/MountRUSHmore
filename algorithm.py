@@ -47,7 +47,7 @@ def Random(board):
 
     plot_moves = []
     original_board = copy.deepcopy(board)
-    iterations = 10000
+    iterations = 12600
 
     # loop iterations times
     for i in range(iterations):
@@ -103,7 +103,7 @@ def Random_Path(board):
 
     plot_moves = []
     original_board = copy.deepcopy(board)
-    iterations = 10
+    iterations = 1
 
     # loop iterations times
     for i in range(iterations):
@@ -118,7 +118,7 @@ def Random_Path(board):
         solution_list = [original_board]
 
         # loop untill the solution of the board is found
-        while not board.isSolution() and total_moves < 1000:
+        while not board.isSolution():
 
             moves = board.possibleMoves()
 
@@ -149,6 +149,7 @@ def Random_Path(board):
 
                 # iterate backwards over de parent boards in solution list
                 for i, boards in enumerate(solution_list):
+                    
                     # print the number of moves
                     print "move: ", i
                     # print the board
