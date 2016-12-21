@@ -103,7 +103,11 @@ def Random_Path(board):
 
     plot_moves = []
     original_board = copy.deepcopy(board)
+<<<<<<< HEAD
     iterations = 1
+=======
+    iterations = 25000
+>>>>>>> origin/master
 
     # loop iterations times
     for i in range(iterations):
@@ -146,6 +150,14 @@ def Random_Path(board):
 
                 # store the sample of the amount of moves in list plot moves
                 plot_moves.append(total_moves)
+
+                # solution_list bewerken en dubbele staten eruit halen
+                for i in range(len(solution_list)):
+                    for j in range(1, len(solution_list)):
+                        if solution_list[i] == solution_list[j]:
+                            solution_listA = solution_list[:i]
+                            solution_listB = solution_list[j:]
+                            solution_list = solution_listA + solution_listB
 
                 # iterate backwards over de parent boards in solution list
                 for i, boards in enumerate(solution_list):
