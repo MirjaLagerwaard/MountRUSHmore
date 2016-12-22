@@ -17,9 +17,8 @@ class Board(object):
 
     def printBoard(self):
         """
-        Prints the board.
+        Print board.
         """
-
         # transpose board to print x and y correctly
         board = [[j[i] for j in self.board] for i in range(len(self.board[0]))]
 
@@ -46,27 +45,24 @@ class Board(object):
                 for i in range(0, vehicle.size):
                     self.board[vehicle.x][vehicle.y - i] = ID
 
-        # prints the board
-        # self.printBoard()
-
     def updateBoard(self, ID, x, y, old_vehicles):
         """
-        Update the board and the hor_auto or ver_auto dict.
+        Update the board and the vehicles array.
         """
 
+        # update the x-coordinate for the horizontal cars
         if old_vehicles[ID].dir == 'H':
             for i in range(old_vehicles[ID].size):
                 self.board[old_vehicles[ID].x - i][old_vehicles[ID].y] = '_'
             for i in range(old_vehicles[ID].size):
                 self.board[x - i][y] = ID
+
+        #update the y-coordinate for the vertical cars
         if old_vehicles[ID].dir == 'V':
             for i in range(old_vehicles[ID].size):
                 self.board[old_vehicles[ID].x][old_vehicles[ID].y - i] = '_'
             for i in range(old_vehicles[ID].size):
                 self.board[x][y - i] = ID
-
-        # prints the board with the vehicle on his new position
-        # self.printBoard()
 
     def possibleMoves(self):
         """
@@ -75,15 +71,15 @@ class Board(object):
 
         children = {}
 
-        # MOVEMENT OF HORIZONTAL CARS
-        # iterate over each vehicle in list 'hor_auto'
+
+        # iterate over each vehicle in array with vehicles
         for ID, vehicle in self.vehicles.iteritems():
+
+            # movement of horizontal cars
             if vehicle.dir == 'H':
                 # iterate over each possible x-position untill RIGHT wall is reached
                 for i in range(vehicle.x + 1, self.width):
-                    # check if position in front of vehicle is empty
                     if self.board[i][vehicle.y] == "_":
-                        # store the coordinates as a tuple
                         coordinate = (i, vehicle.y)
                         # hash the possible child to the dict 'children'
                         if ID in children:
@@ -96,9 +92,7 @@ class Board(object):
 
                 # iterate over each possible x-position untill LEFT wall is reached
                 for i in range(vehicle.x - vehicle.size, -1, -1):
-                    # check if position in front of vehicle is empty
                     if self.board[i][vehicle.y] == "_":
-                        # store the coordinates as a tuple
                         coordinate = (i + vehicle.size - 1, vehicle.y)
                         # hash the possible child to the dict 'children'
                         if ID in children:
@@ -109,14 +103,11 @@ class Board(object):
                     else:
                         break
 
-            # MOVEMENT OF VERTICAL CARS
-            # iterate over each vehicle in list 'ver_auto'
+            # movement of vertical cars
             elif vehicle.dir == 'V':
                 # iterate over each possible y-position untill LOWER wall is reached
                 for i in range(vehicle.y + 1, self.height):
-                    # check if position in front of vehicle is empty
                     if self.board[vehicle.x][i] == "_":
-                        # store the coordinates as a tuple
                         coordinate = (vehicle.x, i)
                         # hash the possible child to the dict 'children'
                         if ID in children:
@@ -129,9 +120,7 @@ class Board(object):
 
                 # iterate over each possible y-position untill UPPER wall is reached
                 for i in range(vehicle.y - vehicle.size, -1, -1):
-                    # check if position in front of vehicle is empty
                     if self.board[vehicle.x][i] == "_":
-                        # store the coordinates as a tuple
                         coordinate = (vehicle.x , i + vehicle.size - 1)
                         # hash the possible child to the dict 'children'
                         if ID in children:
